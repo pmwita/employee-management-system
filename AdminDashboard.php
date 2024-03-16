@@ -28,6 +28,7 @@ function displayAdminDashboard() {
         <h3>Admin Dashboard</h3>
         <div class="dashboard-container">
             <!-- Display admin dashboard elements -->
+
             <div class="dashboard-item">
                 <h2>Payroll Management</h2>
                 <p>Manage employee salaries and payments.</p>

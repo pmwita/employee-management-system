@@ -6,12 +6,15 @@ if (session_status() === PHP_SESSION_NONE) {
 // Function to check if the user is an admin
 function isAdmin() {
     // You would need to replace this with your actual logic to check if the user is an admin
-    // For demonstration purposes, let's assume admin user_id is 1
-    return isset($_SESSION['user_id']) && $_SESSION['user_id'] == 1;
+    // For demonstration purposes, let's assume admin user_id is 1 and role 'admin'
+    return isset($_SESSION['user_id']) && $_SESSION['user_id'] == 1 && isset($_SESSION['role']) && $_SESSION['role'] == 'admin';
 }
 
+// Redirect logic for 'Dashboard' link
+$dashboardLink = isset($_SESSION['user_id']) ? (isAdmin() ? 'AdminDashboard.php' : 'NonAdminDashboard.php') : 'index.php';
+
 // Redirect logic for 'Payroll Management' link
-$payrollLink = isset($_SESSION['user_id']) ? (isAdmin() ? 'payroll_management_admin.php' : 'payroll_management_non_admin.php') : 'index.php';
+$payrollLink = isset($_SESSION['user_id']) ? (isAdmin() ? 'Payroll_management_admin.php' : 'Payroll_management_non_admin.php') : 'index.php';
 ?>
 
 <!DOCTYPE html>
@@ -36,10 +39,11 @@ $payrollLink = isset($_SESSION['user_id']) ? (isAdmin() ? 'payroll_management_ad
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo isset($_SESSION['user_id']) ? 'dashboard.php' : 'index.php'; ?>">Dashboard</a>
+                            <a class="nav-link" href="<?php echo $dashboardLink; ?>">Dashboard</a>
                         </li>
 
                         <li class="nav-item">
+                            <!-- Logic to determine the URL for Payroll Management based on user role -->
                             <a class="nav-link" href="<?php echo $payrollLink; ?>">Payroll Management</a>
                         </li>
 
@@ -61,8 +65,7 @@ $payrollLink = isset($_SESSION['user_id']) ? (isAdmin() ? 'payroll_management_ad
                             <?php endif; ?>
                         </li>
 
-
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <!-- Logic to determine the URL for resignation based on user role -->
                             <?php if (isAdmin()): ?>
                                 <a class="nav-link" href="resignation_admin.php">Resignation</a>
