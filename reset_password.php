@@ -117,6 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="submit" class="btn btn-primary" value="Reset">
             </div>
         </form>
+        <p>Already have an account? <a href="index.php">Login here</a></p>
     </div>
 
     <!-- Footer -->

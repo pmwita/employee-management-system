@@ -49,7 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt_insert_user->execute()) {
             $registration_success = true;
             // Set success message
-            $success_message = "Registration successful. You can now <a href='index.php'>login</a>.";
+            $success_message = "Registration successful. You can now <a href='";
+            if ($role === 'admin') {
+                $success_message .= "login_admin.php'>login as an admin</a>.";
+            } else {
+                $success_message .= "login_user.php'>login as a user</a>.";
+            }
         } else {
             $registration_err = "Something went wrong. Please try again later.";
         }

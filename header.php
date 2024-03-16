@@ -67,7 +67,7 @@ $payrollLink = isset($_SESSION['user_id']) ? (isAdmin() ? 'payroll_management_ad
                             <?php if (isAdmin()): ?>
                                 <a class="nav-link" href="resignation_admin.php">Resignation</a>
                             <?php else: ?>
-                                <a class="nav-link" href="resignation_non_admin.php">Training and Performance Appraisal</a>
+                                <a class="nav-link" href="resignation_non_admin.php"> Resignation</a>
                             <?php endif; ?>
                         </li>
 

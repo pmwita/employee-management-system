@@ -6,48 +6,6 @@ if (isset($_SESSION['user_id'])) {
     header("Location: dashboard.php");
     exit();
 }
-
-// Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Perform login process
-    // Include database connection
-    require_once 'db_connection.php';
-
-    // Retrieve form data
-    if(isset($_POST['username']) && isset($_POST['password'])) {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-
-        // Query to check user credentials
-        $sql = "SELECT id, role, password FROM users WHERE username = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows == 1) {
-            // User found, verify password
-            $row = $result->fetch_assoc();
-            if (password_verify($password, $row['password'])) {
-                // Password is correct, set session variables
-                $_SESSION['user_id'] = $row['id'];
-                $_SESSION['role'] = $row['role'];
-
-                // Redirect to dashboard
-                header("Location: dashboard.php");
-                exit();
-            } else {
-                $login_err = "Invalid username or password.";
-            }
-        } else {
-            $login_err = "Invalid username or password.";
-        }
-
-        // Close statement and database connection
-        $stmt->close();
-    }
-    $conn->close();
-}
 ?>
 
 <?php
@@ -70,21 +28,15 @@ include_once 'header.php';
 
     <div class="container mt-5">
         <h2>Login</h2>
-        <?php if(isset($login_err)) echo "<p class='text-danger'>$login_err</p>"; ?>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" name="username" required>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="login_admin.php" class="btn btn-primary btn-block">Admin Login</a>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+            <div class="col-md-6">
+                <a href="login_user.php" class="btn btn-secondary btn-block">User Login</a>
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-        
+        </div>
         <p>Forgot your password? <a href="reset_password.php">Reset Password</a></p>
-
         <p>Don't have an account? <a href="register.php">Register here</a></p>
     </div>
 
