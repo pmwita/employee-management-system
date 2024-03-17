@@ -1,10 +1,16 @@
 <?php
 session_start();
 
-// Check if user is already logged in, redirect to dashboard
-if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard.php");
-    exit();
+// Check if user is already logged in
+if (isset($_SESSION['user_role'])) {
+    // Redirect based on user role
+    if ($_SESSION['user_role'] === 'Admin') {
+        header("Location: AdminDashboard.php");
+        exit();
+    } elseif ($_SESSION['user_role'] === 'User') {
+        header("Location: NonAdminDashboard.php");
+        exit();
+    }
 }
 ?>
 
