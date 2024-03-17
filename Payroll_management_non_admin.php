@@ -1,20 +1,21 @@
-<!-- This code includes: -->
-
-<!-- Table to display salary details for the logged-in non-admin user. -->
-<!-- PHP code to fetch and display the user's salary records from the database. -->
-<!-- Print button to allow the user to print their salary details. -->
-<!-- Proper database connection handling. -->
-<!-- Usage of Bootstrap for styling. -->
-
 <?php
 // Start session
-session_start();
-
-// Check if the user is not logged in or is an admin, redirect to index.php
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] === 'admin') {
-    header("Location: index.php");
-    exit();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
+
+// Function to check if the user is an admin
+function isAdmin() {
+    // You would need to replace this with your actual logic to check if the user is an admin
+    // For demonstration purposes, let's assume admin user_id is 1 and role 'admin'
+    return isset($_SESSION['user_id']) && $_SESSION['user_id'] == 1 && isset($_SESSION['role']) && $_SESSION['role'] == 'admin';
+}
+
+// Redirect logic for 'Dashboard' link
+$dashboardLink = isset($_SESSION['user_id']) ? (isAdmin() ? 'AdminDashboard.php' : 'NonAdminDashboard.php') : 'index.php';
+
+// Include database connection
+require_once 'db_connection.php';
 
 // Include header
 include_once 'header.php';
@@ -27,9 +28,8 @@ include_once 'header.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payroll Management (Non-Admin)</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Add your custom CSS styles here */
-    </style>
+    <!-- Link to your CSS stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -55,9 +55,6 @@ include_once 'header.php';
             <tbody>
                 <!-- PHP code to fetch and display salary records -->
                 <?php
-                // Include database connection
-                require_once 'db_connection.php';
-
                 // Fetch salary records for the logged-in user
                 $sql = "SELECT * FROM salary_records WHERE user_id = ?";
                 $stmt = $conn->prepare($sql);
@@ -94,4 +91,9 @@ include_once 'header.php';
 <?php
 // Close database connection
 $conn->close();
+?>
+
+<?php
+// Include footer
+include_once 'footer.php';
 ?>
